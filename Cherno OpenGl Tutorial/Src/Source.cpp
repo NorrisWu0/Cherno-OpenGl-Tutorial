@@ -1,4 +1,7 @@
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+#include <Utilities/Debug.h>
 
 GLFWwindow* window;
 
@@ -9,7 +12,8 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1600, 900, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(900, 900, "Hello World", NULL, NULL);
+
     if (!window)
     {
         glfwTerminate(); 
@@ -18,6 +22,15 @@ int main(void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+
+    #pragma region Initialize GLEW
+    /* GLEW can only be initialized after a context has been created*/
+    if (glewInit() != GLEW_OK)
+    {
+        Debug::LogError("Faile to initialize GLEW!!!");
+        return -1;
+    }
+    #pragma endregion
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
